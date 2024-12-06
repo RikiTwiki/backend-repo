@@ -1,13 +1,13 @@
-const RoomModel = require('./room.model'); // Для pg-pool
-const Room = require('./room.entity'); // Импорт сущности
-const { AppDataSource } = require('../../data-source'); // Источник данных для TypeORM
+const RoomModel = require('./room.model'); 
+const Room = require('./room.entity'); 
+const { AppDataSource } = require('../../data-source'); 
 
 const Booking = require('../bookings/booking.entity');
 
-// Получить список всех забронированных комнат
+
 exports.getBookedRooms = async (req, res) => {
     try {
-        const bookedRooms = await RoomModel.getBooked(); // Используем pg-pool
+        const bookedRooms = await RoomModel.getBooked(); 
         res.status(200).json(bookedRooms);
     } catch (error) {
         console.error('Error fetching booked rooms:', error);
@@ -15,7 +15,7 @@ exports.getBookedRooms = async (req, res) => {
     }
 };
 
-// Контроллер для создания нового зала
+
 exports.addRoom = async (req, res) => {
     const { name, description } = req.body;
 
@@ -24,7 +24,7 @@ exports.addRoom = async (req, res) => {
     }
 
     try {
-        const room = await RoomModel.create(name, description); // Используем pg-pool
+        const room = await RoomModel.create(name, description); 
         res.status(201).json(room);
     } catch (error) {
         console.error('Error creating room:', error);
@@ -32,19 +32,19 @@ exports.addRoom = async (req, res) => {
     }
 };
 
-// Забронировать комнату
+
 exports.bookRoom = async (req, res) => {
     try {
         const { room_id, start_time, end_time, reason } = req.body;
 
-        // Проверка наличия необходимых данных
+        
         if (!room_id || !start_time || !end_time || !reason) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const bookingRepository = AppDataSource.getRepository(Booking); // Используйте репозиторий бронирований
+        const bookingRepository = AppDataSource.getRepository(Booking); 
 
-        // Проверяем, занята ли комната в указанный период
+        
         const overlappingBookings = await bookingRepository.query(`
             SELECT * FROM bookings 
             WHERE "room_id" = $1 
@@ -63,7 +63,7 @@ exports.bookRoom = async (req, res) => {
             reason: req.body.reason,
         });
 
-        // Создание записи о бронировании
+        
         const newBooking = {
             room_id: req.body.room_id,
             start_time: req.body.start_time,
@@ -82,7 +82,7 @@ exports.bookRoom = async (req, res) => {
     }
 };
 
-// Получить брони текущего пользователя или всех, если админ
+
 exports.getUserBookings = async (req, res) => {
     try {
 
@@ -90,22 +90,22 @@ exports.getUserBookings = async (req, res) => {
             return res.status(401).json({ message: 'User not authenticated' });
         }
 
-      const userRole = req.user.role; // Получаем роль пользователя
-      const userId = req.user.id; // Используем ID пользователя из сессии или токена JWT
+      const userRole = req.user.role; 
+      const userId = req.user.id; 
   
       const bookingRepository = AppDataSource.getRepository(Booking);
       let bookings;
   
       if (userRole === 'admin') {
-        // Для администратора: все брони
+        
         bookings = await bookingRepository.find({
-          relations: ['room'], // Подгружаем информацию о комнатах
+          relations: ['room'], 
         });
       } else {
-        // Для обычного пользователя: только его брони
+        
         bookings = await bookingRepository.find({
-          where: { user_id: userId }, // Используем user_id в качестве фильтра
-          relations: ['room'], // Подгружаем информацию о комнатах
+          where: { user_id: userId }, 
+          relations: ['room'], 
         });
       }
   
@@ -116,12 +116,12 @@ exports.getUserBookings = async (req, res) => {
     }
 };
 
-// Получить список всех залов
+
 exports.getAllRooms = async (req, res) => {
     try {
-        const roomRepository = AppDataSource.getRepository(Room); // Репозиторий залов
-        const rooms = await roomRepository.find(); // Получение всех записей из таблицы "rooms"
-        res.status(200).json(rooms); // Возвращаем список залов
+        const roomRepository = AppDataSource.getRepository(Room); 
+        const rooms = await roomRepository.find(); 
+        res.status(200).json(rooms); 
     } catch (error) {
         console.error('Error fetching all rooms:', error);
         res.status(500).json({ message: 'Error fetching all rooms' });

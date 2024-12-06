@@ -1,4 +1,3 @@
-// src/auth/auth.controller.js
 import { Controller, Post, Body, Request, UseGuards, Get } from '@nestjs/common';
 import { AuthService } from './dto/auth.service';
 import { LocalAuthGuard } from './local-auth.guard';

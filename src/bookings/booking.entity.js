@@ -10,12 +10,12 @@ module.exports = new EntitySchema({
       generated: 'increment',
     },
     roomId: {
-      name: 'room_id',  // Здесь устанавливается правильное имя столбца
+      name: 'room_id',  
       type: 'int',
       nullable: false,
     },
     userId: {
-      name: 'user_id',  // Аналогично, если в БД столбец называется user_id
+      name: 'user_id',  
       type: 'int',
     },
     startTime: {
@@ -44,13 +44,13 @@ module.exports = new EntitySchema({
     room: {
       target: 'Room',
       type: 'many-to-one',
-      joinColumn: { name: 'room_id' },  // Указываем имя столбца для внешнего ключа
+      joinColumn: { name: 'room_id' },  
       nullable: false,
     },
     user: {
       target: 'User',
       type: 'many-to-one',
-      joinColumn: { name: 'user_id' },  // Аналогично для связи с пользователем
+      joinColumn: { name: 'user_id' },  
       nullable: false,
     },
   },

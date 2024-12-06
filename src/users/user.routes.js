@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('./user.controller');
-const checkAdmin = require('../auth/middleware');
+const authMiddleware = require('../auth/auth');
 
-const User = require('../users/user.entity');
+console.log(userController.getUsers); 
 
-// Роуты для управления пользователями
-router.get('/users', checkAdmin, userController.getUsers);
-// router.post('/users', checkAdmin, userController.createUser);
-// router.put('/users/:id', checkAdmin, userController.updateUser);
-// router.delete('/users/:id', checkAdmin, userController.deleteUser);
+router.get('/users', authMiddleware, userController.getUsers);
+router.post('/users', authMiddleware, userController.createUser);
+router.put('/users/:id', authMiddleware, userController.updateUser);
+router.delete('/users/:id', authMiddleware, userController.deleteUser);
 
 module.exports = router;

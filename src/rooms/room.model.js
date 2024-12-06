@@ -28,7 +28,7 @@ class Room {
         await pool.query('DELETE FROM rooms WHERE id = $1', [id]);
     }
 
-    // Получение всех комнат
+    
     static async getAll() {
         const result = await pool.query('SELECT * FROM rooms');
         return result.rows;

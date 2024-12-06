@@ -1,4 +1,4 @@
-const User = require('./user.model'); // Предполагается, что модель пользователя уже создана
+const User = require('./user.model'); 
 
 async function findOneByEmail(email) {
   return User.findOne({ where: { email } });

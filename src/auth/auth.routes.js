@@ -5,7 +5,7 @@ const authService = require('./auth.service');
 const checkAdmin = require('./middleware');
 
 router.post('/login', async (req, res) => {
-    console.log('Login request received:', req.body); // Лог входящих данных
+    console.log('Login request received:', req.body); 
     const { email, password } = req.body;
     try {
         const { token, user } = await authService.login(email, password);
@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Добавьте этот маршрут для регистрации
+
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   try { 
@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Запрос для администраторов
+
 router.get('/admin', checkAdmin, async (req, res) => {
     try {
         res.status(200).json({ isAdmin: true });

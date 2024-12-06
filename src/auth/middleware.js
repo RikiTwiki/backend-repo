@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
 
         req.user = decoded;
 
-        // Проверка наличия и значения поля role
+        
         if (!req.user.role) {
             console.error('Role not found in token');
             return res.status(403).json({ message: 'Role not found in token' });

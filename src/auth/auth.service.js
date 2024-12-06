@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../users/user.model');  // Убедитесь, что путь корректен
+const User = require('../users/user.model');  
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret'; // Используйте переменную окружения для секрета
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret'; 
 
 async function login(email, password) {
   const user = await User.findByEmail(email);
@@ -25,7 +25,7 @@ async function login(email, password) {
 }
 
 async function register(email, password) {
-  // Проверка на наличие и валидность введенных данных
+  
   if (!email || !password) {
     throw new Error('Email and password are required and cannot be empty');
   }
@@ -38,11 +38,11 @@ async function register(email, password) {
   console.log("Registering user with email: " + email);
 
   try {
-    // Создание нового пользователя и передача нехешированного пароля
-    const newUser = new User(email, password); // Пароль передается не захешированный
-    const savedUser = await newUser.save(); // Хеширование происходит внутри метода save()
+    
+    const newUser = new User(email, password); 
+    const savedUser = await newUser.save(); 
 
-    // Генерация JWT для пользователя
+    
     const token = jwt.sign(
       { userId: savedUser.id, email: savedUser.email, role: savedUser.role },
       JWT_SECRET,
@@ -52,7 +52,7 @@ async function register(email, password) {
     return { token, user: savedUser };
   } catch (error) {
     console.error("Error during registration:", error);
-    throw error;  // Rethrow the error to handle it further up the call stack
+    throw error;  
   }
 }
 

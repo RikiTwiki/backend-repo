@@ -14,9 +14,21 @@ const userRoutes = require('./src/users/user.routes');
 
 const app = express();
 
+// Настройка CORS
+const corsOptions = {
+    origin: 'http://localhost:8081', // Замените на адрес, с которого будете делать запросы
+    optionsSuccessStatus: 200, // некоторые наследуемые браузеры (IE11, различные SmartTV) ограничены 204
+  };
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
+// Логируем все входящие запросы
+app.use((req, res, next) => {
+    console.log(`Incoming request: ${req.method} ${req.url}`);  // Логируем запросы
+    next();  // Переходим к следующему обработчику
+  });
 
 
 // const authRoutes = require('./src/auth/auth.routes'); // Маршруты для авторизации
@@ -39,6 +51,9 @@ AppDataSource.initialize()
     .then(() => {
         console.log('Data Source has been initialized!');
         const PORT = process.env.PORT || 3000;
+
+        console.log(`Attempting to start server on http://localhost:${PORT}`);
+
         app.listen(PORT, () => {
             console.log(`Server running on http://localhost:${PORT}`);
         });

@@ -1,4 +1,3 @@
-// src/rooms/room.service.js
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
