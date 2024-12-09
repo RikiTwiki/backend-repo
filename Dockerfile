@@ -17,12 +17,13 @@ RUN npm install
 # Копируем остальные файлы проекта в контейнер
 COPY . .
 
+# Убедимся, что скрипты находятся в нужном месте и имеют права на выполнение
 COPY ./scripts/wait-for-postgres.sh ./scripts/
-
 RUN chmod +x ./scripts/wait-for-postgres.sh
+RUN ls -la ./scripts/ # Это поможет убедиться, что скрипт существует и исполняем
 
 # Открываем порт для приложения
 EXPOSE 3000
 
-# Команда для запуска приложения
-CMD ["./scripts/wait-for-postgres.sh", "db", "node", "server.js"]
+# Указываем абсолютный путь к скрипту в CMD
+CMD ["/usr/src/app/scripts/wait-for-postgres.sh", "db", "node", "server.js"]
