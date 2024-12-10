@@ -1,9 +1,14 @@
-# Используем официальное Node.js изображение как базовое
-FROM node:16
+# Используем официальное Ubuntu изображение как базовое
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install -y postgresql-client
+# Установка Node.js и PostgreSQL Client
+RUN apt-get update && apt-get install -y curl postgresql-client
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
 
+# Установка часового пояса
 ENV TZ=Asia/Bishkek
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Устанавливаем рабочую директорию
 WORKDIR /usr/src/app
